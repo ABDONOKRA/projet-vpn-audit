@@ -3,8 +3,8 @@
 **Nom du Projet :** Projet 9  
 **Objet :** Mesure d'impact (Débit, Latence, CPU) d'un tunnel SSL VPN (SoftEther)  
 **Outils :** GNS3, Ubuntu, SoftEther, iperf3, ping, htop, Wireshark  
-**Date de début :** `[AAAA-MM-JJ]`  
-**Auteur :** `[Ton Nom]`
+**Date de début :** `[2026-05-01]`  
+**Auteur :** `ENNOUKRA ABDELGHAFOUR`
 
 ---
 
