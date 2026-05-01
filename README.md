@@ -1,3 +1,158 @@
+# Projet 9 : Audit de Performance d'un SSL VPN
+> **Guide complet — étape par étape**
+ 
+---
+ 
+## Objectif du projet
+ 
+Mesurer et comparer les **performances réseau** (débit, latence, CPU) **avec et sans VPN**, en utilisant SoftEther comme serveur VPN SSL dans un environnement GNS3.
+ 
+---
+ 
+## Topologie cible (GNS3)
+ 
+```
+[Client Ubuntu] ──── [Switch/Routeur] ──── [Serveur SoftEther VPN]
+                                                    │
+                                             [Serveur iperf3]
+```
+ 
+- **Client** : Ubuntu (génère le trafic, mesure les performances)
+- **Serveur VPN** : Ubuntu + SoftEther VPN Server
+- **Serveur de test** : Ubuntu + iperf3 (cible des mesures)
+---
+ 
+## Étapes du projet
+ 
+### PHASE 1 — Préparation de l'environnement GNS3
+ 
+- [ ] **Étape 1** : Créer le projet GNS3
+- [ ] **Étape 2** : Ajouter les VMs Ubuntu (Client + Serveur VPN + Serveur iperf3)
+- [ ] **Étape 3** : Configurer les adresses IP statiques
+- [ ] **Étape 4** : Vérifier la connectivité entre les machines (ping de base)
+---
+ 
+### PHASE 2 — Installation et configuration de SoftEther VPN
+ 
+- [ ] **Étape 5** : Télécharger et installer SoftEther VPN Server sur la VM serveur
+- [ ] **Étape 6** : Configurer le serveur VPN via `vpncmd` (Virtual Hub, utilisateur, mot de passe)
+- [ ] **Étape 7** : Activer le protocole SSL-VPN (port 443)
+- [ ] **Étape 8** : Installer SoftEther VPN Client sur la VM client
+- [ ] **Étape 9** : Connecter le client au serveur VPN et vérifier l'interface `vpn_*`
+---
+ 
+### PHASE 3 — Protocole de test (sans VPN)
+ 
+- [ ] **Étape 10** : Installer `iperf3` sur client et serveur
+- [ ] **Étape 11** : **Mesure débit TCP sans VPN** — `iperf3 -c <IP_serveur> -t 30`
+- [ ] **Étape 12** : **Mesure débit UDP sans VPN** — `iperf3 -c <IP_serveur> -u -b 100M -t 30`
+- [ ] **Étape 13** : **Mesure latence sans VPN** — `ping -c 100 <IP_serveur>`
+- [ ] **Étape 14** : **Observation CPU sans VPN** — `htop` pendant les tests
+- [ ] **Étape 15** : **Capture Wireshark sans VPN** — noter le trafic en clair
+---
+ 
+### PHASE 4 — Protocole de test (avec VPN)
+ 
+- [ ] **Étape 16** : Activer la connexion VPN sur le client
+- [ ] **Étape 17** : **Mesure débit TCP avec VPN** — même commande iperf3 via tunnel
+- [ ] **Étape 18** : **Mesure débit UDP avec VPN**
+- [ ] **Étape 19** : **Mesure latence avec VPN** — `ping -c 100 <IP_serveur>`
+- [ ] **Étape 20** : **Observation CPU avec VPN** — `htop` (noter la charge liée au chiffrement)
+- [ ] **Étape 21** : **Capture Wireshark avec VPN** — trafic chiffré visible sur l'interface physique
+---
+ 
+### PHASE 5 — Collecte et organisation des données
+ 
+- [ ] **Étape 22** : Remplir les tableaux de mesures (voir modèle ci-dessous)
+- [ ] **Étape 23** : Générer les graphiques comparatifs (débit, latence, CPU)
+- [ ] **Étape 24** : Sauvegarder les captures Wireshark (`.pcapng`)
+---
+ 
+### PHASE 6 — Analyse et rédaction du rapport
+ 
+- [ ] **Étape 25** : Analyser les écarts observés entre les deux scénarios
+- [ ] **Étape 26** : Rédiger l'analyse de performance
+- [ ] **Étape 27** : Rédiger la conclusion argumentée
+- [ ] **Étape 28** : Assembler tous les livrables
+---
+ 
+## Modèles de tableaux de mesures
+ 
+### Tableau 1 — Débit (iperf3)
+ 
+| Protocole | Sans VPN (Mbps) | Avec VPN (Mbps) | Perte (%) |
+|-----------|----------------|----------------|-----------|
+| TCP       |                |                |           |
+| UDP       |                |                |           |
+ 
+### Tableau 2 — Latence (ping)
+ 
+| Mesure     | Sans VPN (ms) | Avec VPN (ms) | Augmentation (ms) |
+|------------|--------------|--------------|-------------------|
+| Min        |              |              |                   |
+| Moyen      |              |              |                   |
+| Max        |              |              |                   |
+| Jitter     |              |              |                   |
+ 
+### Tableau 3 — Usage CPU (htop)
+ 
+| Phase              | CPU Client (%) | CPU Serveur VPN (%) |
+|--------------------|---------------|---------------------|
+| Idle (repos)       |               |                     |
+| Test sans VPN      |               |                     |
+| Test avec VPN      |               |                     |
+ 
+---
+ 
+## Commandes clés à retenir
+ 
+```bash
+# Test débit TCP (30 secondes)
+iperf3 -c <IP_SERVEUR> -t 30
+ 
+# Test débit UDP (100 Mbps simulés)
+iperf3 -c <IP_SERVEUR> -u -b 100M -t 30
+ 
+# Latence (100 pings)
+ping -c 100 <IP_SERVEUR>
+ 
+# Monitoring CPU en temps réel
+htop
+ 
+# Capture réseau
+wireshark &   # ou tcpdump -i eth0 -w capture.pcapng
+```
+ 
+---
+ 
+## Livrables attendus
+ 
+| Livrable               | Description                                      |
+|------------------------|--------------------------------------------------|
+| Protocole de test      | Document décrivant la méthodologie utilisée      |
+| Tableaux de mesures    | Données brutes remplies (débit, latence, CPU)    |
+| Captures/Graphiques    | Screenshots htop, graphiques iperf3, Wireshark   |
+| Analyse des performances | Comparaison chiffrée et interprétation          |
+| Conclusion argumentée  | Synthèse des résultats et recommandations        |
+ 
+---
+ 
+## Conseils du prof
+ 
+> - Répéter chaque test **3 fois minimum** et prendre la moyenne
+> - Toujours noter l'heure et les conditions du test
+> - Comparer uniquement dans des conditions **identiques** (même trafic, même moment)
+> - Le chiffrement SSL coûte du CPU → c'est **normal** d'observer une hausse
+> - Sur GNS3, les performances sont simulées : les tendances comptent plus que les valeurs absolues
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+[version 1]
 
 # 📘 Plan de Projet : Audit de performance d'un SSL VPN
 
